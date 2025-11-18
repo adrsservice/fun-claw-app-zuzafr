@@ -1,22 +1,34 @@
-export const modalDemos = [
+
+export interface DemoItem {
+  title: string;
+  description: string;
+  route: string;
+  icon?: string;
+}
+
+export const modalDemos: DemoItem[] = [
   {
-    title: "Standard Modal",
-    description: "Full screen modal presentation",
-    route: "/modal",
-    color: "#007AFF",
+    title: "Fun Claw Game",
+    description: "Play the claw machine game! Catch items as the claw moves across the screen.",
+    route: "/game",
+    icon: "🎮",
   },
   {
-    title: "Form Sheet",
-    description: "Bottom sheet with detents and grabber",
-    route: "/formsheet",
-    color: "#34C759",
+    title: "Modal",
+    description: "A simple modal that slides up from the bottom",
+    route: "/modal",
+    icon: "📱",
   },
   {
     title: "Transparent Modal",
-    description: "Overlay without obscuring background",
+    description: "A modal with a transparent background",
     route: "/transparent-modal",
-    color: "#FF9500",
-  }
+    icon: "🪟",
+  },
+  {
+    title: "Form Sheet",
+    description: "A form sheet modal (iOS style)",
+    route: "/formsheet",
+    icon: "📋",
+  },
 ];
-
-export type ModalDemo = typeof modalDemos[0];

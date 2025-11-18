@@ -1,90 +1,58 @@
+
 import React from "react";
-import { Link } from "expo-router";
-import { Pressable, StyleSheet, View, Text } from "react-native";
-import { IconSymbol } from "@/components/IconSymbol";
-import { useTheme } from "@react-navigation/native";
-import { ModalDemo } from "./homeData";
-import { GlassView } from "expo-glass-effect";
+import { Text, StyleSheet, TouchableOpacity, useColorScheme } from "react-native";
+import { useRouter } from "expo-router";
+import { DemoItem } from "./homeData";
 
 interface DemoCardProps {
-  item: ModalDemo;
+  item: DemoItem;
 }
 
 export function DemoCard({ item }: DemoCardProps) {
-  const theme = useTheme();
+  const router = useRouter();
+  const colorScheme = useColorScheme();
+  const isDark = colorScheme === 'dark';
 
   return (
-    <GlassView
+    <TouchableOpacity
       style={[
-        styles.demoCard,
-        { backgroundColor: theme.dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)' }
+        styles.card,
+        {
+          backgroundColor: isDark ? '#2a2a2a' : '#fff',
+          borderColor: isDark ? '#444' : '#e0e0e0',
+        },
       ]}
-      glassEffectStyle="regular"
+      onPress={() => router.push(item.route as any)}
     >
-      <View style={[styles.demoIcon, { backgroundColor: item.color }]}>
-        <IconSymbol ios_icon_name="square.grid.3x3" android_material_icon_name="apps" color={theme.dark ? '#111111' : '#FFFFFF'} size={24} />
-      </View>
-      <View style={styles.demoContent}>
-        <Text style={[styles.demoTitle, { color: theme.colors.text }]}>
-          {item.title}
-        </Text>
-        <Text style={[styles.demoDescription, { color: theme.dark ? '#98989D' : '#666' }]}>
-          {item.description}
-        </Text>
-      </View>
-      <Link href={item.route as any} asChild>
-        <Pressable>
-          <View
-            style={[
-              styles.tryButton,
-              { backgroundColor: theme.dark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.08)' }
-            ]}
-          >
-            <Text style={[styles.tryButtonText, { color: theme.colors.primary }]}>
-              Try It
-            </Text>
-          </View>
-        </Pressable>
-      </Link>
-    </GlassView>
+      {item.icon && <Text style={styles.icon}>{item.icon}</Text>}
+      <Text style={[styles.title, { color: isDark ? '#fff' : '#000' }]}>{item.title}</Text>
+      <Text style={[styles.description, { color: isDark ? '#aaa' : '#666' }]}>
+        {item.description}
+      </Text>
+    </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
-  demoCard: {
+  card: {
+    padding: 20,
+    marginBottom: 16,
     borderRadius: 12,
-    padding: 16,
-    marginBottom: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
+    borderWidth: 1,
+    boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
+    elevation: 3,
   },
-  demoIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 16,
+  icon: {
+    fontSize: 40,
+    marginBottom: 8,
   },
-  demoContent: {
-    flex: 1,
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 8,
   },
-  demoTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginBottom: 4,
-  },
-  demoDescription: {
+  description: {
     fontSize: 14,
-    lineHeight: 18,
-  },
-  tryButton: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 6,
-  },
-  tryButtonText: {
-    fontSize: 14,
-    fontWeight: '600',
+    lineHeight: 20,
   },
 });
