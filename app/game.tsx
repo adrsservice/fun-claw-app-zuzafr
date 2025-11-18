@@ -27,6 +27,28 @@ interface Item {
   caught: boolean;
 }
 
+const ITEM_EMOJIS = [
+  '🍎', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓', '🍒', '🥝', '🍑',
+  '🍍', '🥭', '🍐', '🍏', '🫐', '🥥', '🍈', '🍅', '🥕', '🌽',
+  '🎁', '💎', '⭐', '🏆', '👑', '🎈', '🎀', '🧸', '🎮', '🎯',
+];
+
+const generateItems = (count: number = 15): Item[] => {
+  const items: Item[] = [];
+  
+  for (let i = 0; i < count; i++) {
+    items.push({
+      id: Date.now() + i,
+      emoji: ITEM_EMOJIS[Math.floor(Math.random() * ITEM_EMOJIS.length)],
+      x: Math.random() * (SCREEN_WIDTH - ITEM_SIZE - 40) + 20,
+      y: GAME_AREA_HEIGHT - BOTTOM_AREA_HEIGHT + Math.random() * 80,
+      caught: false,
+    });
+  }
+  
+  return items;
+};
+
 export default function GameScreen() {
   const router = useRouter();
   const colorScheme = useColorScheme();
@@ -46,20 +68,7 @@ export default function GameScreen() {
 
   // Initialize items at the bottom
   useEffect(() => {
-    const emojis = ['🍎', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓', '🍒', '🥝', '🍑'];
-    const initialItems: Item[] = [];
-    
-    for (let i = 0; i < 10; i++) {
-      initialItems.push({
-        id: i,
-        emoji: emojis[Math.floor(Math.random() * emojis.length)],
-        x: Math.random() * (SCREEN_WIDTH - ITEM_SIZE - 40) + 20,
-        y: GAME_AREA_HEIGHT - BOTTOM_AREA_HEIGHT + Math.random() * 80,
-        caught: false,
-      });
-    }
-    
-    setItems(initialItems);
+    setItems(generateItems(15));
   }, []);
 
   // Horizontal claw movement with random speed
@@ -151,20 +160,7 @@ export default function GameScreen() {
   };
 
   const resetGame = () => {
-    const emojis = ['🍎', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓', '🍒', '🥝', '🍑'];
-    const newItems: Item[] = [];
-    
-    for (let i = 0; i < 10; i++) {
-      newItems.push({
-        id: Date.now() + i,
-        emoji: emojis[Math.floor(Math.random() * emojis.length)],
-        x: Math.random() * (SCREEN_WIDTH - ITEM_SIZE - 40) + 20,
-        y: GAME_AREA_HEIGHT - BOTTOM_AREA_HEIGHT + Math.random() * 80,
-        caught: false,
-      });
-    }
-    
-    setItems(newItems);
+    setItems(generateItems(15));
     setScore(0);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
   };
